@@ -134,13 +134,14 @@
 
         let correctAnswersText = "<h3>Correct Answers:</h3>";
         userAnswers.forEach(answer => {
-            correctAnswersText += `
-                <p>
-                    <strong>Question:</strong> ${answer.question} <br>
-                    <strong>Your answer:</strong> ${answer.selected} <br>
-                    <strong>Correct answer:</strong> ${answer.correct}
+            correctAnswersText += 
+                <p> <h5>
+                    Question:${answer.question} <br>
+                    Your answer: ${answer.selected} <br>
+                   Correct answer: ${answer.correct}
+                   </h5>
                 </p>
-            `;
+            ;
         });
         document.getElementById("correct-answers").innerHTML = correctAnswersText;
     }
