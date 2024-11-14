@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('bg.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: beige;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .quiz-container {
+            background-image: url(blur_bg.png);
+            width: 50%;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        button {
+            padding: 20px 40px;
+            margin: 20px;
+            background-color: rgb(0, 0, 0);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: rgb(85, 93, 116);
+        }
+        .result {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1><strong>QuickIQ</strong></h1>
+    <p id="question">Question will go here</p>
+    
+    <div id="options">
+        <button onclick="checkAnswer('A')">Option A</button>
+        
+        <button onclick="checkAnswer('B')">Option B</button>
+        <button onclick="checkAnswer('C')">Option C</button>
+        
+        <button onclick="checkAnswer('D')">Option D</button>
+    </div>
+    
+    <div id="result" class="result"></div>
+    <div id="correct-answers" class="result"></div>
+</div>
+
+<script>
+    const questions = [
+        {   
+            question: "Which protocol is used to secure data transfer on the internet?",
+            options: { A: "FTP", B: "HTTP", C: "HTTPS", D: "SMTP" },
+            correctAnswer: "C"
+        },
+        {
+            question: "Which protocol is primarily used for sending emails?",
+            options: { A: "HTTP", B: "FTP", C: "SMTP", D: "IP" },
+            correctAnswer: "C"
+        },
+        {
+            question: "Which programming language is primarily used for iOS app development?",
+            options: { A: "Swift", B: "Java", C: "Python", D: "C++" },
+            correctAnswer: "A"
+        },
+        {
+            question: "Which company developed the popular JavaScript library React?",
+            options: { A: "Google", B: "Facebook", C: " Microsoft", D: "Apple" },
+            correctAnswer: "B"
+        },
+        {
+            question: "What is the most popular open-source version control system?",
+            options: { A: "SVN", B: "Git", C: "Mercurial", D: "CVS" },
+            correctAnswer: "B"
+        }
+   ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const userAnswers = [];
+
+    function loadQuestion() {
+        const currentQuestion = questions[currentQuestionIndex];
+        document.getElementById("question").innerText = currentQuestion.question;
+        const options = currentQuestion.options;
+        document.querySelectorAll("#options button").forEach((button, index) => {
+            const optionKey = Object.keys(options)[index];
+            button.innerText = options[optionKey];
+        });
+    }
+
+    function checkAnswer(selectedOption) {
+        const currentQuestion = questions[currentQuestionIndex];
+        const correctAnswer = currentQuestion.correctAnswer;
+            
+        if (selectedOption === correctAnswer) {
+            score++;
+        }
+        userAnswers.push({ question: currentQuestion.question, selected: selectedOption, correct: correctAnswer });
+
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } 
+        else if (score == 5){
+            document.getElementById("result").innerText = `Congratulations! Your score is ${score} out of ${questions.length}`;
+            document.getElementById("options").style.display = 'none';
+            document.getElementById("question").style.display = 'none';        }
+        else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById("result").innerText = `Your score is ${score} out of ${questions.length}`;
+        document.getElementById("options").style.display = 'none';
+        document.getElementById("question").style.display = 'none';
+
+        let correctAnswersText = "<h3>Correct Answers:</h3>";
+        userAnswers.forEach(answer => {
+            correctAnswersText += `
+                <p>
+                    <strong>Question:</strong> ${answer.question} <br>
+                    <strong>Your answer:</strong> ${answer.selected} <br>
+                    <strong>Correct answer:</strong> ${answer.correct}
+                </p>
+            `;
+        });
+        document.getElementById("correct-answers").innerHTML = correctAnswersText;
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
